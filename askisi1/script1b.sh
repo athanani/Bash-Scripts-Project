@@ -3,6 +3,10 @@
 trap "kill 0" SIGINT
 
 func() {
+	if [[ ! -d "1b" ]]; then
+		mkdir "1b"
+	fi
+	cd "1b"
 	curl -s $2 > "${1}" || echo "${2} FAILED" 1>&2 # curl is in silent mode. Remove -s to see output.
 	if [[ ! -f md5sum${1}.txt && -s ${1} ]]; then
 		md5sum "${1}" >> md5sum${1}.txt
@@ -15,6 +19,7 @@ func() {
 			sed -i "s/$line/$temp/" md5sum${1}.txt
 		fi
 	fi
+	cd ..
 }
 
 arr=()
