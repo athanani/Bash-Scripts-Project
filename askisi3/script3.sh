@@ -30,17 +30,17 @@ if [ -f $1 ]; then
     done < $1
 fi
 
-if [ -f temp.txt ]; then
-    sed -e 's|[][,.!?"^*()-/\\&_;:]| |g' temp.txt > temp1.txt
-    tr '[:upper:]' '[:lower:]' < temp1.txt > temp.txt 
+sed -i 's|[][,.!?"^*()-/\\&_;:]| |g' temp.txt
+sed -i 's/[A-Z]/\L&/g' temp.txt
 
-    sed -e 's/'\''[a-z]\s/ /g' temp.txt > temp1.txt 
-    sed -e 's/ '\''/ /g' temp1.txt > temp.txt
-    sed -e 's/'\'' / /g' temp.txt > temp1.txt
-    sed -e 's/^'\''/\n/g' temp1.txt > temp.txt
-    sed -e 's/'\''[a-z]$/ /g' temp.txt > temp1.txt
+sed -i 's/'\''[a-z]\s/ /g' temp.txt 
+sed -i 's/ '\''/ /g' temp.txt
+sed -i 's/'\'' / /g' temp.txt
+sed -i 's/^'\''/\n/g' temp.txt
+sed -i 's/'\''[a-z]$/ /g' temp.txt
 
-    sed -r 's/^\s*//; s/\s*$//; /^$/d' temp1.txt > temp.txt
-    sed -e 's/  */ /g' temp.txt > temp1.txt
-    sed -e 's/\s/\n/g' < temp1.txt | sort | uniq -c | sort -nr | head -$2 | while read c w; do echo "${w} ${c}"; done
-fi
+sed -i 's/^\s*//g' temp.txt
+sed -i 's/\s*$//g' temp.txt
+sed -i ' /^$/d' temp.txt
+sed -i 's/  */ /g' temp.txt
+sed -e 's/\s/\n/g' < temp.txt | sort | uniq -c | sort -nr | head -$2 | while read c w; do echo "${w} ${c}"; done
